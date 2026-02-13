@@ -1,0 +1,9 @@
+
+{
+  "name": "Eternal Valentine",
+  "description": "A high-end, personalized Valentine's Day experience featuring AI-powered love letters, romantic image generation, and a digital memory vault.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
