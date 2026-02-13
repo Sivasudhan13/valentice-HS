@@ -4,6 +4,8 @@ import { generateLoveLetter, generateRomanticArt, generateRelationshipReport } f
 import FloatingHearts from './components/FloatingHearts';
 import MemoryWall from './components/MemoryWall';
 import { Memory, LoveLetterParams } from './types';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 // Personal photos provided by the user
 const userPhotos = [
@@ -199,17 +201,24 @@ const App: React.FC = () => {
 
   const downloadPDF = async () => {
     if (!reportRef.current) return;
-    const element = reportRef.current;
-    // @ts-ignore
-    const canvas = await html2canvas(element, { scale: 3, useCORS: true, backgroundColor: '#ffffff' });
-    const imgData = canvas.toDataURL('image/png');
-    // @ts-ignore
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    pdf.save(`Marriage_Certificate_Harini_Sivasudhan.pdf`);
+    try {
+      const element = reportRef.current;
+      const canvas = await html2canvas(element, { 
+        scale: 3, 
+        useCORS: true, 
+        backgroundColor: '#fffcf5',
+        logging: false
+      });
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`Marriage_Certificate_Harini_Sivasudhan.pdf`);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('Failed to generate PDF. Please try again.');
+    }
   };
 
   // Intro Component
